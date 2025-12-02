@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Analisis Pendidikan Perubahan Iklim</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f9f6;
+            color: #1a4731;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 100, 80, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #0d7a5f 0%, #1a9e7a 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .total-summary {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+        
+        .data-content {
+            padding: 40px;
+        }
+        
+        .theme-section {
+            margin-bottom: 35px;
+            padding: 25px;
+            background: #f8fcfb;
+            border-radius: 15px;
+            border-left: 6px solid #0d7a5f;
+            transition: transform 0.2s;
+        }
+        
+        .theme-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 100, 80, 0.08);
+        }
+        
+        .theme-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #d4f1e6;
+        }
+        
+        .theme-title {
+            font-size: 1.4rem;
+            color: #0d7a5f;
+            font-weight: 700;
+            flex: 1;
+        }
+        
+        .theme-total {
+            background: #0d7a5f;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            min-width: 70px;
+            text-align: center;
+        }
+        
+        .sub-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .sub-item {
+            background: white;
+            padding: 18px;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0, 100, 80, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e0f2eb;
+        }
+        
+        .sub-item-name {
+            font-weight: 500;
+            color: #2d4a3e;
+            font-size: 1rem;
+        }
+        
+        .sub-item-value {
+            font-weight: 700;
+            color: #0d7a5f;
+            font-size: 1.3rem;
+            background: #f0f9f6;
+            padding: 5px 15px;
+            border-radius: 20px;
+            min-width: 50px;
+            text-align: center;
+        }
+        
+        .data-table-section {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #d4f1e6;
+        }
+        
+        .table-title {
+            color: #0d7a5f;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 5px 15px rgba(0, 100, 80, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #d4f1e6;
+        }
+        
+        .data-table th {
+            background: #0d7a5f;
+            color: white;
+            padding: 18px 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .data-table td {
+            padding: 18px 20px;
+            border-bottom: 1px solid #e0f2eb;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background: #f8fcfb;
+        }
+        
+        .main-theme-row {
+            background: #e0f2eb !important;
+            font-weight: 700;
+            color: #0d7a5f;
+            font-size: 1.1rem;
+        }
+        
+        .main-theme-row td {
+            padding-top: 22px;
+            padding-bottom: 22px;
+        }
+        
+        .sub-theme-cell {
+            padding-left: 40px !important;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #f1f9f6;
+            color: #4a6b5f;
+            margin-top: 40px;
+            border-top: 1px solid #d4f1e6;
+        }
+        
+        .data-summary {
+            text-align: center;
+            margin: 40px 0;
+            padding: 25px;
+            background: #f0f9f6;
+            border-radius: 12px;
+            border: 1px solid #d4f1e6;
+        }
+        
+        .summary-title {
+            color: #0d7a5f;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .summary-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        
+        .stat {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0, 100, 80, 0.08);
+            min-width: 150px;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0d7a5f;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #4a6b5f;
+            font-size: 0.95rem;
+        }
+        
+        @media (max-width: 768px) {
+            .data-content {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .theme-section {
+                padding: 20px;
+            }
+            
+            .theme-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .theme-total {
+                align-self: flex-end;
+            }
+            
+            .sub-items {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 14px 15px;
+            }
+            
+            .summary-stats {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .stat {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-seedling"></i> Data Analisis Pendidikan Perubahan Iklim</h1>
+            <p class="subtitle">Data lengkap daripada penyelidikan pelaksanaan pendidikan perubahan iklim</p>
+            <div class="total-summary">
+                <i class="fas fa-clipboard-list"></i> Jumlah (n): <strong>136</strong>
+            </div>
+        </header>
+        
+        <div class="data-content">
+            <!-- Tema 1 -->
+            <div class="theme-section">
+                <div class="theme-header">
+                    <h2 class="theme-title">Kepercayaan terhadap Peranan Diri sebagai Agensi Perubahan</h2>
+                    <div class="theme-total">34</div>
+                </div>
+                <div class="sub-items">
+                    <div class="sub-item">
+                        <span class="sub-item-name">Diri Sendiri</span>
+                        <span class="sub-item-value">16</span>
+                    </div>
+                    <div class="sub-item">
+                        <span class="sub-item-name">Masa Depan</span>
+                        <span class="sub-item-value">7</span>
+                    </div>
+                    <div class="sub-item">
+                        <span class="sub-item-name">Kewajipan Sosial</span>
+                        <span class="sub-item-value">6</span>
+                    </div>
+                    <div class="sub-item">
+                        <span class="sub-item-name">Keterhubungan Sosial</span>
+                        <span class="sub-item-value">3</span>
+                    </div>
+                    <div class="sub-item">
+                        <span class="sub-item-name">Pendirian Kritikal</span>
+                        <span class="sub-item-value">2</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tema 2 -->
+            <div class="theme-section">
+                <div class="theme-header">
+                    <h2 class="theme-title">Cabaran dalam Menyebarkan Maklumat dan Kesedaran Perubahan Iklim</h2>
+                    <div class="theme-total">40</div>
+                </div>
+                <div class="sub-items">
+                    <div class="sub-item">
+                        <span class="sub-item-name">Kendiri (Dalaman)</span>
+                        <span class="sub-item-value">10</span>
+                    </div>
+                    <div class="sub-item">
+                        <span class="sub-item-name">Sistem dan Persekitaran</span>
+                        <span class="sub-item-value">10</span>
+                    </div>
+                    <div class="sub-item">
+                        <span class="sub-item-name">Sosial dan Masyarakat</span>
+                        <span class="sub-item-value">16</span>
+                    </div>
+                    <div class="sub-item">
+                        <span class="sub-item-name">Kompleksiti Isu</span>
+                        <span class="sub-item-value">4</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tema 3 -->
+            <div class="theme-section">
+                <div class="theme-header">
+                    <h2 class="theme-title">Peranan Sekolah, Guru Institusi Latihan Perguruan dalam Menangani Isu Perubahan Iklim</h2>
+                    <div class="theme-total">14</div>
+                </div>
+                <div class="sub-items">
+                    <div class="sub-item">
+                        <span class="sub-item-name">Peranan Pendidikan</span>
+                        <span class="sub-item-value">6</span>
+                    </div>
+                    <div class="sub-item">
+                        <span class="sub-item-name">Sebagai Teladan</span>
+                        <span class="sub-item-value">3</span>
+                    </div>
+                    <div class="sub-item">
+                        <span class="sub-item-name">Tanggungjawab Profesional</span>
+                        <span class="sub-item-value">5</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tema 4 -->
+            <div class="theme-section">
+                <div class="theme-header">
+                    <h2 class="theme-title">Kelemahan dan Kekuatan Pelaksanaan Pendidikan Perubahan Iklim Semasa (PPI)</h2>
+                    <div class="theme-total">28</div>
+                </div>
+                <div class="sub-items">
+                    <div class="sub-item">
+                        <span class="sub-item-name">Kelemahan</span>
+                        <span class="sub-item-value">17</span>
+                    </div>
+                    <div class="sub-item">
+                        <span class="sub-item-name">Kekuatan</span>
+                        <span class="sub-item-value">9</span>
+                    </div>
+                    <div class="sub-item">
+                        <span class="sub-item-name">Cadangan Penambahbaikan</span>
+                        <span class="sub-item-value">2</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tema 5 -->
+            <div class="theme-section">
+                <div class="theme-header">
+                    <h2 class="theme-title">Dimensi Afektif dalam Penglibatan Pendidikan Perubahan Iklim (PPI)</h2>
+                    <div class="theme-total">20</div>
+                </div>
+                <div class="sub-items">
+                    <div class="sub-item">
+                        <span class="sub-item-name">Positif</span>
+                        <span class="sub-item-value">9</span>
+                    </div>
+                    <div class="sub-item">
+                        <span class="sub-item-name">Negatif</span>
+                        <span class="sub-item-value">11</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ringkasan Data -->
+            <div class="data-summary">
+                <div class="summary-title">
+                    <i class="fas fa-chart-bar"></i> Ringkasan Data
+                </div>
+                <div class="summary-stats">
+                    <div class="stat">
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">Tema Utama</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">17</div>
+                        <div class="stat-label">Sub-Kategori</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">136</div>
+                        <div class="stat-label">Jumlah Respons</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Jadual Data Lengkap -->
+            <div class="data-table-section">
+                <h2 class="table-title">
+                    <i class="fas fa-table"></i> Jadual Data Lengkap
+                </h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th width="70%">Tema dan Unit Pengekodan</th>
+                            <th width="30%">n</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="main-theme-row">
+                            <td colspan="2">Kepercayaan terhadap Peranan Diri sebagai Agensi Perubahan</td>
+                        </tr>
+                        <tr>
+                            <td class="sub-theme-cell">Diri Sendiri</td>
+                            <td>16</td>
+                        </tr>
+                        <tr>
+                            <td class="sub-theme-cell">Masa Depan</td>
+                            <td>7</td>
+                        </tr>
+                        <tr>
+                            <td class="sub-theme-cell">Kewajipan Sosial</td>
+                            <td>6</td>
+                        </tr>
+                        <tr>
+                            <td class="sub-theme-cell">Keterhubungan Sosial</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td class="sub-theme-cell">Pendirian Kritikal</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr class="main-theme-row">
+                            <td colspan="2">Cabaran dalam Menyebarkan Maklumat dan Kesedaran Perubahan Iklim</td>
+                        </tr>
+                        <tr>
+                            <td class="sub-theme-cell">Kendiri (Dalaman)</td>
+                            <td>10</td>
+                        </tr>
+                        <tr>
+                            <td class="sub-theme-cell">Sistem dan Persekitaran</td>
+                            <td>10</td>
+                        </tr>
+                        <tr>
+                            <td class="sub-theme-cell">Sosial dan Masyarakat</td>
+                            <td>16</td>
+                        </tr>
+                        <tr>
+                            <td class="sub-theme-cell">Kompleksiti Isu</td>
+                            <td>4</td>
+                        </tr>
+                        
+                        <tr class="main-theme-row">
+                            <td colspan="2">Peranan Sekolah, Guru Institusi Latihan Perguruan dalam Menangani Isu Perubahan Iklim</td>
+                        </tr>
+                        <tr>
+                            <td class="sub-theme-cell">Peranan Pendidikan</td>
+                            <td>6</td>
+                        </tr>
+                        <tr>
+                            <td class="sub-theme-cell">Sebagai Teladan</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td class="sub-theme-cell">Tanggungjawab Profesional</td>
+                            <td>5</td>
+                        </tr>
+                        
+                        <tr class="main-theme-row">
+                            <td colspan="2">Kelemahan dan Kekuatan Pelaksanaan Pendidikan Perubahan Iklim Semasa (PPI)</td>
+                        </tr>
+                        <tr>
+                            <td class="sub-theme-cell">Kelemahan</td>
+                            <td>17</td>
+                        </tr>
+                        <tr>
+                            <td class="sub-theme-cell">Kekuatan</td>
+                            <td>9</td>
+                        </tr>
+                        <tr>
+                            <td class="sub-theme-cell">Cadangan Penambahbaikan</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr class="main-theme-row">
+                            <td colspan="2">Dimensi Afektif dalam Penglibatan Pendidikan Perubahan Iklim (PPI)</td>
+                        </tr>
+                        <tr>
+                            <td class="sub-theme-cell">Positif</td>
+                            <td>9</td>
+                        </tr>
+                        <tr>
+                            <td class="sub-theme-cell">Negatif</td>
+                            <td>11</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <footer>
+            <!-- <p><i class="fas fa-database"></i> Data Analisis Pendidikan Perubahan Iklim | Semua data dipamerkan dalam istilah Bahasa Melayu asal</p> -->
+            <p style="margin-top: 10px; font-size: 0.9rem;">Jumlah keseluruhan: 34 + 40 + 14 + 28 + 20 = <strong>136</strong> n</p>
+        </footer>
+    </div>
+</body>
+</html>
